@@ -1,0 +1,54 @@
+CREATE database tus;
+
+use tus;
+
+CREATE TABLE `User` (
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(50) NOT NULL,
+  `Email` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`Id`)
+);
+
+CREATE TABLE `Module` (
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`Id`)
+);
+
+CREATE TABLE `ExamResults` (
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `ModuleId` INT NOT NULL,
+  `UserId` INT NOT NULL,
+  `Grade` VARCHAR(2) NOT NULL,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`ModuleId`) REFERENCES `Module` (`Id`) ON DELETE CASCADE, 
+  FOREIGN KEY (`UserId`) REFERENCES `User` (`Id`) ON DELETE CASCADE
+);
+
+CREATE TABLE `Roles` (
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Role` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`Id`)
+);
+
+CREATE TABLE `UserRole` (
+  `UserId` INT NOT NULL,
+  `RoleId` INT NOT NULL,
+  PRIMARY KEY (`UserId`, `RoleId`),
+  FOREIGN KEY (`UserId`) REFERENCES `User` (`Id`) ON DELETE CASCADE,
+  FOREIGN KEY (`RoleId`) REFERENCES `Roles` (`Id`) ON DELETE CASCADE
+);
+
+CREATE TABLE `UserModuleTable` (
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `ModuleId` INT NOT NULL,
+  `UserId` INT NOT NULL,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`ModuleId`) REFERENCES `Module` (`Id`),
+  FOREIGN KEY (`UserId`) REFERENCES `User` (`Id`)
+);
+
+CREATE TABLE `GradesTable` (
+  `Grade` VARCHAR(2) NOT NULL,
+  PRIMARY KEY (`Grade`)
+);
